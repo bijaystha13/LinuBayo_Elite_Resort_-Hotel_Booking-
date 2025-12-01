@@ -1,25 +1,32 @@
-"use client";
-
 import { useState } from "react";
 
-const useForm = (initialValues, onSubmit, validate = () => ({})) => {
+const useForm = (initialValues, onSubmit, validate) => {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setValues({ ...values, [name]: type === "checkbox" ? checked : value });
+
+    setValues((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleBlur = (e) => {
     const { name } = e.target;
-    setTouched({ ...touched, [name]: true });
-    setErrors({ ...errors, ...validate(values) });
+
+    setTouched((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
+
+    const validationErrors = validate(values);
+    setErrors(validationErrors);
   };
 
-  const handleSubmit = (e) => {
-    e?.preventDefault?.();
+  const handleSubmit = () => {
     const validationErrors = validate(values);
     setErrors(validationErrors);
     setTouched(
@@ -35,11 +42,12 @@ const useForm = (initialValues, onSubmit, validate = () => ({})) => {
     values,
     errors,
     touched,
+    setValues,
+    setErrors,
+    setTouched, // ← IMPORTANT
     handleChange,
     handleBlur,
     handleSubmit,
-    setValues,
-    setErrors,
   };
 };
 

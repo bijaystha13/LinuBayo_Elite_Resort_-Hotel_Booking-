@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Lock, Eye, EyeOff } from "lucide-react";
-// import styles from "./login.module.css";
 import styles from "@/app/login/login.module.css";
 
 const PasswordInput = ({
@@ -11,31 +10,34 @@ const PasswordInput = ({
   onBlur,
   error,
   placeholder,
-  autoFocus = false,
+  disabled = false,
+  autoComplete = "current-password",
 }) => {
-  const [show, setShow] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className={styles.formGroup}>
-      <label className={styles.formLabel}>{label}</label>
+      {label && <label className={styles.formLabel}>{label}</label>}
       <div className={styles.inputWrapper}>
         <Lock className={styles.inputIcon} />
         <input
-          type={show ? "text" : "password"}
+          type={showPassword ? "text" : "password"}
           name={name}
-          className={`${styles.formInput} ${error ? styles.inputError : ""}`}
           value={value}
           onChange={onChange}
           onBlur={onBlur}
           placeholder={placeholder}
-          autoFocus={autoFocus}
+          disabled={disabled}
+          autoComplete={autoComplete}
+          className={`${styles.formInput} ${error ? styles.inputError : ""}`}
         />
         <button
           type="button"
           className={styles.eyeButton}
-          onClick={() => setShow(!show)}
+          onClick={() => setShowPassword(!showPassword)}
+          tabIndex={-1}
         >
-          {show ? (
+          {showPassword ? (
             <EyeOff className={styles.eyeIcon} />
           ) : (
             <Eye className={styles.eyeIcon} />

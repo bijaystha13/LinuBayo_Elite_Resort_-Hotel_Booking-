@@ -8,6 +8,7 @@
   background: #0f172a;
   padding: 2rem;
   padding-top: 160px;
+  /* padding-top: clamp(80px, 10vh, 160px); */
   padding-bottom: 2rem;
   position: relative;
   overflow: hidden;
@@ -41,16 +42,16 @@
 }
 
 .gradientOrb1 {
-  width: 500px;
-  height: 500px;
+  width: 40vw;
+  height: 40vw;
   background: linear-gradient(135deg, #667eea, #764ba2);
   top: -10%;
   right: -5%;
 }
 
 .gradientOrb2 {
-  width: 400px;
-  height: 400px;
+  width: 32vw;
+  height: 32vw;
   background: linear-gradient(135deg, #f093fb, #f5576c);
   bottom: -10%;
   left: -5%;
@@ -58,8 +59,8 @@
 }
 
 .gradientOrb3 {
-  width: 350px;
-  height: 350px;
+  width: 28vw;
+  height: 28vw;
   background: linear-gradient(135deg, #4facfe, #00f2fe);
   top: 50%;
   left: 50%;
@@ -85,10 +86,11 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 450px;
+  /* max-width: 450px; */
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: clamp(320px, 90vw, 430px);
 }
 
 .authCard {
@@ -105,6 +107,7 @@
   overflow: visible;
   width: 100%;
   transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  /* max-width: clamp(320px, 90vw, 430px); */
 }
 
 .authCard.transitioning {
@@ -330,7 +333,8 @@
 }
 
 .welcomeTitle {
-  font-size: 1.75rem;
+  /* font-size: 1.75rem; */
+  font-size: clamp(1.5rem, 2.5vw, 1.75rem);
   font-weight: 800;
   margin-bottom: 0.5rem;
   color: white;
@@ -830,5 +834,11 @@
 
   .formGroup {
     margin-bottom: 0.875rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .authCard {
+    transform: scale(0.95);
   }
 }

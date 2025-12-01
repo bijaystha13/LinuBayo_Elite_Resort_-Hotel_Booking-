@@ -6,6 +6,7 @@
   right: 0;
   z-index: 1000;
   transition: all 0.3s ease;
+  width: 100%;
 }
 
 .navbar.scrolled .mainNav {
@@ -87,6 +88,7 @@
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
+  width: 100%;
 }
 
 .navContainer {
@@ -96,6 +98,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 70px;
 }
 
 /* Logo */
@@ -150,6 +153,7 @@
   flex: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .navLinks {
@@ -159,6 +163,7 @@
   margin: 0;
   padding: 0;
   align-items: center;
+  flex-wrap: nowrap;
 }
 
 .navItem {
@@ -435,7 +440,12 @@
   height: 24px;
 }
 
-/* Overlay */
+/* Hide mobile-only elements on desktop */
+.mobileOnly {
+  display: none;
+}
+
+/* Overlay - FIXED */
 .overlay {
   position: fixed;
   top: 0;
@@ -444,11 +454,9 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(4px);
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
+  z-index: 1001;
   transition: all 0.3s ease;
-  pointer-events: none;
+  display: none;
 }
 
 .overlay.active {
@@ -483,7 +491,7 @@
   }
 }
 
-/* Mobile View (768px and below) */
+/* Mobile View (768px and below) - FIXED */
 @media (max-width: 768px) {
   .topBar {
     display: none;
@@ -492,12 +500,17 @@
   .navContainer {
     padding: 1rem 1.5rem;
     position: relative;
+    min-height: 60px;
   }
 
   .mobileMenuBtn {
     display: flex;
     z-index: 1003;
     position: relative;
+  }
+
+  .overlay {
+    display: block;
   }
 
   .navCenter {
@@ -524,14 +537,49 @@
     align-items: flex-start;
     gap: 0;
     width: 100%;
-    pointer-events: all;
   }
 
   .navItem {
     width: 100%;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 0;
-    pointer-events: all;
+  }
+
+  /* Hide mobile-only items on desktop */
+  .mobileOnly {
+    display: none;
+  }
+
+  /* Show mobile-only items in mobile view */
+  @media (max-width: 768px) {
+    .mobileOnly {
+      display: block;
+      border-bottom: none;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .mobileLoginBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  }
+
+  .mobileLoginBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
   }
 
   .navLink {
@@ -539,8 +587,6 @@
     justify-content: space-between;
     padding: 1rem 0;
     font-size: 1.05rem;
-    pointer-events: all;
-    cursor: pointer;
   }
 
   .navLink::after {
@@ -599,11 +645,6 @@
   .signInBtn,
   .signUpBtn {
     display: none;
-  }
-
-  /* Show overlay when menu is open */
-  .overlay {
-    display: block;
   }
 
   .logoName {
@@ -687,9 +728,4 @@
   .navContainer {
     padding: 0.65rem 0.875rem;
   }
-}
-
-/* Prevent body scroll when mobile menu is open */
-body.menuOpen {
-  overflow: hidden;
 }

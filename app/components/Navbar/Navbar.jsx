@@ -107,6 +107,14 @@ const Navbar = () => {
             </Link>
           </div>
 
+          {/* Overlay - moved BEFORE navCenter */}
+          {isMobileMenuOpen && (
+            <div
+              className={`${styles.overlay} ${styles.active}`}
+              onClick={toggleMobileMenu}
+            ></div>
+          )}
+
           {/* Apply mobileMenuOpen to navCenter */}
           <div
             className={`${styles.navCenter} ${
@@ -319,6 +327,17 @@ const Navbar = () => {
                   Contact
                 </Link>
               </li>
+
+              {/* Mobile Login Button */}
+              <li className={`${styles.navItem} ${styles.mobileOnly}`}>
+                <Link
+                  href="/login"
+                  className={styles.mobileLoginBtn}
+                  onClick={closeMobileMenu}
+                >
+                  Log In
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -331,10 +350,6 @@ const Navbar = () => {
               Log In
             </Link>
 
-            {/* <Link href="/signup" className={styles.signUpBtn}>
-              Sign Up
-            </Link> */}
-
             <button className={styles.mobileMenuBtn} onClick={toggleMobileMenu}>
               {isMobileMenuOpen ? (
                 <X className={styles.menuIcon} />
@@ -345,13 +360,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
-      {/* Overlay with active class - render always but control visibility with CSS */}
-      <div
-        className={`${styles.overlay} ${isMobileMenuOpen ? styles.active : ""}`}
-        onClick={toggleMobileMenu}
-        style={{ display: isMobileMenuOpen ? "block" : "none" }}
-      ></div>
     </nav>
   );
 };

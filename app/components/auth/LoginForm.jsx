@@ -5,21 +5,73 @@ import { Mail } from "lucide-react";
 import TextInput from "./TextInput";
 import PasswordInput from "./PasswordInput";
 import SocialButton from "./SocialButton";
-
 import useForm from "@/app/shared/hooks/useFormHook";
 import styles from "@/app/login/login.module.css";
 
-const LoginForm = () => {
+const validateLogin = (values) => {
+  const errors = {};
+  if (!values.email) {
+    errors.email = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+    errors.email = "Please enter a valid email";
+  }
+
+  if (!values.password) {
+    errors.password = "Password is required";
+  } else if (values.password.length < 6) {
+    errors.password = "Password must be at least 6 characters";
+  }
+
+  return errors;
+};
+
+const LoginForm = ({ onSubmit }) => {
   const [loginStep, setLoginStep] = useState(1);
 
   const loginForm = useForm(
     { email: "", password: "", rememberMe: false },
-    (values) => console.log("Login submitted:", values)
+    onSubmit,
+    validateLogin
   );
 
+  //   const handleLoginContinue = () => {
+  //     // Validate only email
+  //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  //     if (!loginForm.values.email) {
+  //       loginForm.setErrors({ email: "Email is required" });
+  //       return;
+  //     }
+
+  //     if (!emailRegex.test(loginForm.values.email)) {
+  //       loginForm.setErrors({ email: "Please enter a valid email" });
+  //       return;
+  //     }
+
+  //     // Clear errors and move to next step
+  //     loginForm.setErrors({});
+  //     setLoginStep(2);
+  //   };
+
   const handleLoginContinue = () => {
-    if (loginForm.values.email && !loginForm.errors.email) setLoginStep(2);
-    else loginForm.setErrors({ email: "Please enter a valid email" });
+    const email = loginForm.values.email;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Mark email touched so error displays
+    loginForm.handleBlur({ target: { name: "email" } });
+
+    if (!email) {
+      loginForm.setErrors({ email: "Email is required" });
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      loginForm.setErrors({ email: "Please enter a valid email" });
+      return;
+    }
+
+    loginForm.setErrors({});
+    setLoginStep(2);
   };
 
   return (
@@ -43,9 +95,20 @@ const LoginForm = () => {
             onBlur={loginForm.handleBlur}
             error={loginForm.touched.email && loginForm.errors.email}
             placeholder="Enter your email"
+            autoComplete="email"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleLoginContinue();
+              }
+            }}
           />
 
-          <button onClick={handleLoginContinue} className={styles.submitButton}>
+          <button
+            type="button"
+            onClick={handleLoginContinue}
+            className={styles.submitButton}
+          >
             Continue
           </button>
 
@@ -75,6 +138,7 @@ const LoginForm = () => {
             onBlur={loginForm.handleBlur}
             error={loginForm.touched.password && loginForm.errors.password}
             placeholder="Enter your password"
+            autoComplete="current-password"
           />
 
           <div className={styles.formOptions}>
@@ -95,12 +159,14 @@ const LoginForm = () => {
 
           <div className={styles.buttonGroup}>
             <button
+              type="button"
               onClick={() => setLoginStep(1)}
               className={styles.backButton}
             >
               Back
             </button>
             <button
+              type="button"
               onClick={loginForm.handleSubmit}
               className={styles.submitButton}
             >

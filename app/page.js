@@ -1,28 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Search,
   MapPin,
   Calendar,
   Users,
   Star,
-  Wifi,
   Award,
-  TrendingUp,
   Heart,
   ArrowRight,
-  Check,
+  Clock,
+  DollarSign,
+  Zap,
+  Gift,
+  Sparkles,
 } from "lucide-react";
 import styles from "./page.module.css";
 
 const HotelBookingHome = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [activeDestination, setActiveDestination] = useState(0);
   const [searchData, setSearchData] = useState({
     destination: "",
     checkIn: "",
     checkOut: "",
     guests: "2",
   });
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   const handleInputChange = (e) => {
     setSearchData({
@@ -35,361 +43,391 @@ const HotelBookingHome = () => {
     console.log("Searching with:", searchData);
   };
 
+  const destinations = [
+    { name: "Paris", emoji: "🗼", color: "#ff6b35" },
+    { name: "Tokyo", emoji: "🗾", color: "#ffa500" },
+    { name: "New York", emoji: "🗽", color: "#ff69b4" },
+    { name: "Dubai", emoji: "🏙️", color: "#32cd32" },
+    { name: "London", emoji: "🎡", color: "#ff1493" },
+    { name: "Bali", emoji: "🏝️", color: "#00bfff" },
+  ];
+
+  const featuredHotels = [
+    {
+      id: 1,
+      name: "Luxury Resort & Spa",
+      location: "Bali, Indonesia",
+      price: 299,
+      rating: 5.0,
+      reviews: 324,
+      image: "🏨",
+      type: "Resort",
+    },
+    {
+      id: 2,
+      name: "Grand Plaza Hotel",
+      location: "New York, USA",
+      price: 459,
+      rating: 4.8,
+      reviews: 892,
+      image: "🏢",
+      type: "Business",
+    },
+    {
+      id: 3,
+      name: "Beachfront Paradise",
+      location: "Maldives",
+      price: 599,
+      rating: 4.9,
+      reviews: 567,
+      image: "🏖️",
+      type: "Beach Resort",
+    },
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "Travel Blogger",
+      initial: "S",
+      rating: 5.0,
+      comment:
+        "Amazing experience! The booking process was seamless and the hotel exceeded all expectations. The customer support team was incredibly helpful throughout my entire trip.",
+    },
+    {
+      name: "Michael Chen",
+      role: "Business Traveler",
+      initial: "M",
+      rating: 4.9,
+      comment:
+        "I use this platform for all my business trips. The best price guarantee has saved me thousands, and the flexible cancellation policy is a lifesaver for my unpredictable schedule.",
+    },
+    {
+      name: "Emma Davis",
+      role: "Adventure Seeker",
+      initial: "E",
+      rating: 5.0,
+      comment:
+        "Found the perfect beachfront resort for my honeymoon! The verified reviews helped us make the right choice. Everything was exactly as described. Highly recommend!",
+    },
+  ];
+
   return (
-    <div className={styles.homePage}>
-      <section className={styles.heroSection}>
-        <div className={styles.heroBackground}>
-          <div className={styles.gradientOrb1}></div>
-          <div className={styles.gradientOrb2}></div>
-          <div className={styles.gradientOrb3}></div>
+    <div className={styles.homepage}>
+      {/* Hero Section */}
+      <section className={styles["hero-section"]}>
+        <div className={styles["hero-background"]}>
+          <div
+            className={`${styles["gradient-orb"]} ${styles["gradient-orb-1"]}`}
+          ></div>
+          <div
+            className={`${styles["gradient-orb"]} ${styles["gradient-orb-2"]}`}
+          ></div>
+          <div
+            className={`${styles["gradient-orb"]} ${styles["gradient-orb-3"]}`}
+          ></div>
         </div>
 
-        <div className={styles.heroContent}>
-          <div className={styles.heroText}>
+        <div className={styles["hero-content"]}>
+          <div className={styles["hero-text"]}>
             <div className={styles.badge}>
-              <Award className={styles.badgeIcon} />
+              <Award className={styles["badge-icon"]} />
               <span>Trusted by 500K+ Travelers</span>
             </div>
 
-            <h1 className={styles.heroTitle}>
-              Find Your Perfect <span className={styles.gradient}>Stay</span>{" "}
-              Anywhere
+            <h1 className={styles["hero-title"]}>
+              Find Your Perfect{" "}
+              <span className={styles["gradient-text"]}>Stay</span> Anywhere
             </h1>
 
-            <p className={styles.heroDescription}>
-              Discover and book amazing hotels worldwide. From luxury resorts to
-              cozy boutique stays, find the perfect accommodation for your next
-              adventure.
+            <p className={styles["hero-description"]}>
+              Experience luxury accommodations from premium hotels worldwide,
+              delivered with exceptional service and unforgettable memories.
             </p>
 
-            <div className={styles.searchBox}>
-              <div className={styles.searchField}>
-                <label className={styles.searchLabel}>Where</label>
-                <div style={{ position: "relative" }}>
-                  <MapPin className={styles.searchIcon} />
-                  <input
-                    type="text"
-                    name="destination"
-                    className={styles.searchInput}
-                    placeholder="Search destinations"
-                    value={searchData.destination}
-                    onChange={handleInputChange}
-                  />
-                </div>
+            <div className={styles["search-box"]}>
+              <div className={styles["search-field"]}>
+                <MapPin className={styles["search-icon"]} />
+                <input
+                  type="text"
+                  name="destination"
+                  className={styles["search-input"]}
+                  placeholder="Where are you going?"
+                  value={searchData.destination}
+                  onChange={handleInputChange}
+                />
               </div>
 
-              <div className={styles.searchField}>
-                <label className={styles.searchLabel}>Check-in</label>
-                <div style={{ position: "relative" }}>
-                  <Calendar className={styles.searchIcon} />
-                  <input
-                    type="date"
-                    name="checkIn"
-                    className={styles.searchInput}
-                    value={searchData.checkIn}
-                    onChange={handleInputChange}
-                  />
-                </div>
+              <div className={styles["search-field"]}>
+                <Calendar className={styles["search-icon"]} />
+                <input
+                  type="date"
+                  name="checkIn"
+                  className={styles["search-input"]}
+                  value={searchData.checkIn}
+                  onChange={handleInputChange}
+                />
               </div>
 
-              <div className={styles.searchField}>
-                <label className={styles.searchLabel}>Check-out</label>
-                <div style={{ position: "relative" }}>
-                  <Calendar className={styles.searchIcon} />
-                  <input
-                    type="date"
-                    name="checkOut"
-                    className={styles.searchInput}
-                    value={searchData.checkOut}
-                    onChange={handleInputChange}
-                  />
-                </div>
+              <div className={styles["search-field"]}>
+                <Calendar className={styles["search-icon"]} />
+                <input
+                  type="date"
+                  name="checkOut"
+                  className={styles["search-input"]}
+                  value={searchData.checkOut}
+                  onChange={handleInputChange}
+                />
               </div>
 
-              <div className={styles.searchField}>
-                <label className={styles.searchLabel}>Guests</label>
-                <div style={{ position: "relative" }}>
-                  <Users className={styles.searchIcon} />
-                  <select
-                    name="guests"
-                    className={styles.searchInput}
-                    value={searchData.guests}
-                    onChange={handleInputChange}
-                  >
-                    <option value="1">1 Guest</option>
-                    <option value="2">2 Guests</option>
-                    <option value="3">3 Guests</option>
-                    <option value="4">4 Guests</option>
-                    <option value="5">5+ Guests</option>
-                  </select>
-                </div>
+              <div className={styles["search-field"]}>
+                <Users className={styles["search-icon"]} />
+                <select
+                  name="guests"
+                  className={styles["search-input"]}
+                  value={searchData.guests}
+                  onChange={handleInputChange}
+                >
+                  <option value="1">1 Guest</option>
+                  <option value="2">2 Guests</option>
+                  <option value="3">3 Guests</option>
+                  <option value="4">4 Guests</option>
+                  <option value="5">5+ Guests</option>
+                </select>
               </div>
 
-              <button className={styles.ctaButton} onClick={handleSearch}>
-                <Search className={styles.buttonIcon} />
-                Search
+              <button className={styles["cta-button"]} onClick={handleSearch}>
+                <Search className={styles["button-icon"]} />
+                Search Hotels
               </button>
             </div>
 
-            <div className={styles.heroFeatures}>
-              <div className={styles.heroFeature}>
-                <Check className={styles.checkIcon} />
-                <span>Best Price Guarantee</span>
+            <div className={styles["hero-stats"]}>
+              <div className={styles["stat-item"]}>
+                <span className={styles["stat-number"]}>10K+</span>
+                <span className={styles["stat-label"]}>Happy Travelers</span>
               </div>
-              <div className={styles.heroFeature}>
-                <Check className={styles.checkIcon} />
-                <span>Free Cancellation</span>
+              <div className={styles["stat-item"]}>
+                <span className={styles["stat-number"]}>500+</span>
+                <span className={styles["stat-label"]}>Luxury Hotels</span>
               </div>
-              <div className={styles.heroFeature}>
-                <Check className={styles.checkIcon} />
-                <span>24/7 Support</span>
+              <div className={styles["stat-item"]}>
+                <span className={styles["stat-number"]}>4.9★</span>
+                <span className={styles["stat-label"]}>Average Rating</span>
               </div>
             </div>
           </div>
 
-          <div className={styles.heroImage}>
-            <div className={styles.mockupCard}>
-              <div className={styles.mockupHeader}>
-                <div className={styles.mockupDot}></div>
-                <div className={styles.mockupDot}></div>
-                <div className={styles.mockupDot}></div>
-              </div>
-
-              <div className={styles.hotelPreview}>
-                <div className={styles.hotelImage}>
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "200px",
-                      background: "linear-gradient(135deg, #667eea, #764ba2)",
-                      borderRadius: "16px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "3rem",
-                    }}
-                  >
-                    🏨
-                  </div>
-                </div>
-
-                <div className={styles.hotelInfo}>
-                  <div className={styles.hotelName}>Luxury Resort & Spa</div>
-                  <div className={styles.hotelLocation}>
-                    <MapPin style={{ width: "14px", height: "14px" }} />
-                    Bali, Indonesia
-                  </div>
-                  <div className={styles.hotelRating}>
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <Star key={i} className={styles.starIcon} />
-                    ))}
-                    <span style={{ marginLeft: "8px", fontSize: "0.875rem" }}>
-                      5.0 (324 reviews)
-                    </span>
-                  </div>
-                  <div className={styles.hotelPrice}>
-                    <span style={{ fontSize: "2rem", fontWeight: "800" }}>
-                      $299
-                    </span>
-                    <span style={{ fontSize: "1rem", opacity: "0.7" }}>
-                      /night
-                    </span>
-                  </div>
-                </div>
-              </div>
+          <div className={styles["hero-visual"]}>
+            <div className={styles["hotel-emoji-grid"]}>
+              <div className={styles["emoji-card"]}>🏨</div>
+              <div className={styles["emoji-card"]}>🏖️</div>
+              <div className={styles["emoji-card"]}>🗼</div>
+              <div className={styles["emoji-card"]}>🏢</div>
+              <div className={styles["emoji-card"]}>🏝️</div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className={styles.statsSection}>
-        <div className={styles.statsContainer}>
-          <div className={styles.statCard}>
-            <div className={styles.statIcon}>
-              <Award />
-            </div>
-            <h3 className={styles.statNumber}>50K+</h3>
-            <p className={styles.statLabel}>Hotels Worldwide</p>
+      {/* Promo Banner */}
+      <section className={styles["promo-banner"]}>
+        <div className={styles["promo-content"]}>
+          <Sparkles className={styles["promo-icon"]} />
+          <span className={styles["promo-tag"]}>LIMITED TIME OFFER</span>
+        </div>
+        <h2 className={styles["promo-title"]}>
+          Get 50% OFF Your First Booking!
+        </h2>
+        <p className={styles["promo-description"]}>
+          Join thousands of travelers. Register now for exclusive deals, faster
+          booking, and real-time availability.
+        </p>
+        <div className={styles["promo-features"]}>
+          <div className={styles["promo-feature"]}>
+            <Zap className={styles["feature-icon"]} />
+            <span>Instant booking</span>
           </div>
-
-          <div className={styles.statCard}>
-            <div className={styles.statIcon}>
-              <Users />
-            </div>
-            <h3 className={styles.statNumber}>2M+</h3>
-            <p className={styles.statLabel}>Happy Travelers</p>
+          <div className={styles["promo-feature"]}>
+            <Gift className={styles["feature-icon"]} />
+            <span>Exclusive deals</span>
           </div>
-
-          <div className={styles.statCard}>
-            <div className={styles.statIcon}>
-              <Star />
-            </div>
-            <h3 className={styles.statNumber}>4.9</h3>
-            <p className={styles.statLabel}>Average Rating</p>
-          </div>
-
-          <div className={styles.statCard}>
-            <div className={styles.statIcon}>
-              <TrendingUp />
-            </div>
-            <h3 className={styles.statNumber}>95%</h3>
-            <p className={styles.statLabel}>Customer Satisfaction</p>
+          <div className={styles["promo-feature"]}>
+            <Award className={styles["feature-icon"]} />
+            <span>Earn rewards</span>
           </div>
         </div>
-      </section>
-
-      <section className={styles.featuresSection}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Why Book With Us</h2>
-          <p className={styles.sectionDescription}>
-            Experience hassle-free booking with exclusive benefits designed for
-            modern travelers
+        <div className={styles["promo-actions"]}>
+          <button className={styles["primary-button"]}>
+            Sign Up Now
+            <ArrowRight className={styles["button-icon"]} />
+          </button>
+          <p className={styles["login-link"]}>
+            Already have an account? <span>Sign In</span>
           </p>
         </div>
 
-        <div className={styles.featuresGrid}>
-          <div className={styles.featureCard}>
-            <div className={styles.featureIconWrapper}>
-              <Award className={styles.featureIcon} />
+        <div className={styles["promo-mockup"]}>
+          <div className={styles["mockup-card"]}>
+            <div className={styles["mockup-header"]}>
+              <span>🏨</span>
+              <span>LuxuryStay</span>
             </div>
-            <h3 className={styles.featureTitle}>Best Price Guarantee</h3>
-            <p className={styles.featureDescription}>
-              Find a lower price? We&apos;ll match it and give you an additional
-              discount. Your satisfaction is our priority.
-            </p>
-          </div>
-
-          <div className={styles.featureCard}>
-            <div className={styles.featureIconWrapper}>
-              <Heart className={styles.featureIcon} />
+            <div className={styles["mockup-body"]}>
+              <p>Book in seconds</p>
+              <div className={styles["mockup-rating"]}>
+                <Star className={styles["star-filled"]} />
+                <span>4.9★ Rating</span>
+              </div>
+              <p>10K+ Bookings</p>
             </div>
-            <h3 className={styles.featureTitle}>Easy Cancellation</h3>
-            <p className={styles.featureDescription}>
-              Plans change. Cancel for free up to 24 hours before check-in on
-              most bookings. No hidden fees.
-            </p>
-          </div>
-
-          <div className={styles.featureCard}>
-            <div className={styles.featureIconWrapper}>
-              <Users className={styles.featureIcon} />
+            <div className={styles["mockup-badges"]}>
+              <span className={styles["badge-pill"]}>50% OFF</span>
+              <span className={styles["badge-pill"]}>Free Parking</span>
             </div>
-            <h3 className={styles.featureTitle}>24/7 Customer Support</h3>
-            <p className={styles.featureDescription}>
-              Our dedicated team is always here to help you, anytime, anywhere.
-              Get instant assistance whenever you need it.
-            </p>
-          </div>
-
-          <div className={styles.featureCard}>
-            <div className={styles.featureIconWrapper}>
-              <Star className={styles.featureIcon} />
-            </div>
-            <h3 className={styles.featureTitle}>Verified Reviews</h3>
-            <p className={styles.featureDescription}>
-              Read honest reviews from real travelers. Make informed decisions
-              based on authentic experiences.
-            </p>
-          </div>
-
-          <div className={styles.featureCard}>
-            <div className={styles.featureIconWrapper}>
-              <Wifi className={styles.featureIcon} />
-            </div>
-            <h3 className={styles.featureTitle}>Premium Amenities</h3>
-            <p className={styles.featureDescription}>
-              Enjoy free WiFi, parking, breakfast and more at selected
-              properties. Comfort and convenience included.
-            </p>
-          </div>
-
-          <div className={styles.featureCard}>
-            <div className={styles.featureIconWrapper}>
-              <MapPin className={styles.featureIcon} />
-            </div>
-            <h3 className={styles.featureTitle}>Prime Locations</h3>
-            <p className={styles.featureDescription}>
-              Stay in the heart of the action. All our hotels are carefully
-              selected for their convenient locations.
-            </p>
           </div>
         </div>
       </section>
 
-      <section className={styles.destinationsSection}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Popular Destinations</h2>
-          <p className={styles.sectionDescription}>
-            Explore the world&apos;s most sought-after travel destinations
+      {/* Popular Destinations */}
+      <section className={styles["categories-section"]}>
+        <div className={styles["section-header"]}>
+          <h2 className={styles["section-title"]}>Popular Destinations</h2>
+          <p className={styles["section-subtitle"]}>
+            Discover your dream vacation spot
           </p>
         </div>
 
-        <div className={styles.destinationsGrid}>
-          {[
-            { name: "Paris", count: "1,234", emoji: "🗼" },
-            { name: "Tokyo", count: "987", emoji: "🗾" },
-            { name: "New York", count: "2,156", emoji: "🗽" },
-            { name: "Dubai", count: "1,543", emoji: "🏙️" },
-            { name: "London", count: "1,876", emoji: "🎡" },
-            { name: "Bali", count: "892", emoji: "🏝️" },
-          ].map((dest, index) => (
-            <div key={index} className={styles.destinationCard}>
-              <div className={styles.destinationImage}>
-                <div style={{ fontSize: "4rem" }}>{dest.emoji}</div>
+        <div className={styles["categories-grid"]}>
+          {destinations.map((dest, index) => (
+            <div
+              key={index}
+              className={`${styles["category-card"]} ${
+                activeDestination === index ? styles.active : ""
+              }`}
+              onClick={() => setActiveDestination(index)}
+              style={{ "--category-color": dest.color }}
+            >
+              <span className={styles["category-emoji"]}>{dest.emoji}</span>
+              <span className={styles["category-name"]}>{dest.name}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className={styles["features-section"]}>
+        <div className={styles["feature-card"]}>
+          <div className={styles["feature-icon-wrapper"]}>
+            <Clock className={styles["feature-icon"]} />
+          </div>
+          <h3 className={styles["feature-title"]}>Instant Booking</h3>
+          <p className={styles["feature-description"]}>
+            Reserve your room instantly with real-time availability and
+            confirmation.
+          </p>
+        </div>
+
+        <div className={styles["feature-card"]}>
+          <div className={styles["feature-icon-wrapper"]}>
+            <DollarSign className={styles["feature-icon"]} />
+          </div>
+          <h3 className={styles["feature-title"]}>Best Price Guarantee</h3>
+          <p className={styles["feature-description"]}>
+            Find a lower price? We&apos;ll match it plus give you an extra
+            discount.
+          </p>
+        </div>
+
+        <div className={styles["feature-card"]}>
+          <div className={styles["feature-icon-wrapper"]}>
+            <Award className={styles["feature-icon"]} />
+          </div>
+          <h3 className={styles["feature-title"]}>Premium Quality</h3>
+          <p className={styles["feature-description"]}>
+            Only verified hotels with exceptional service and top-rated
+            amenities.
+          </p>
+        </div>
+      </section>
+
+      {/* Featured Hotels */}
+      <section className={styles["featured-section"]}>
+        <div className={styles["section-header"]}>
+          <h2 className={styles["section-title"]}>Premium Selection</h2>
+          <p className={styles["section-subtitle"]}>
+            Handpicked by our travel experts
+          </p>
+        </div>
+
+        <div className={styles["featured-grid"]}>
+          {featuredHotels.map((hotel) => (
+            <div key={hotel.id} className={styles["featured-card"]}>
+              <div className={styles["card-image"]}>
+                <span className={styles["hotel-emoji"]}>{hotel.image}</span>
+                <button className={styles["favorite-btn"]}>
+                  <Heart />
+                </button>
               </div>
-              <div className={styles.destinationOverlay}>
-                <h3 className={styles.destinationName}>{dest.name}</h3>
-                <p className={styles.destinationCount}>{dest.count} Hotels</p>
+              <div className={styles["card-content"]}>
+                <h3 className={styles["card-title"]}>{hotel.name}</h3>
+                <p className={styles["card-subtitle"]}>by {hotel.type}</p>
+                <div className={styles["card-meta"]}>
+                  <div className={styles.rating}>
+                    <Star className={styles["star-filled"]} />
+                    <span>{hotel.rating}</span>
+                  </div>
+                  <div className={styles.location}>
+                    <MapPin className={styles["location-icon"]} />
+                    <span>{hotel.location}</span>
+                  </div>
+                </div>
+                <div className={styles["card-footer"]}>
+                  <div className={styles.price}>
+                    <span className={styles["price-amount"]}>
+                      ${hotel.price}
+                    </span>
+                    <span className={styles["price-label"]}>/night</span>
+                  </div>
+                  <button className={styles["book-button"]}>Book Now</button>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      <section className={styles.testimonialsSection}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>What Travelers Say</h2>
-          <p className={styles.sectionDescription}>
-            Read reviews from our satisfied customers around the globe
+      {/* Testimonials */}
+      <section className={styles["testimonials-section"]}>
+        <div className={styles["section-header"]}>
+          <h2 className={styles["section-title"]}>What Travelers Say</h2>
+          <p className={styles["section-subtitle"]}>
+            Read reviews from our satisfied customers
           </p>
         </div>
 
-        <div className={styles.testimonialsGrid}>
-          {[
-            {
-              name: "Sarah Johnson",
-              role: "Travel Blogger",
-              initial: "S",
-              comment:
-                "Amazing experience! The booking process was seamless and the hotel exceeded all expectations. The customer support team was incredibly helpful throughout my entire trip.",
-            },
-            {
-              name: "Michael Chen",
-              role: "Business Traveler",
-              initial: "M",
-              comment:
-                "I use this platform for all my business trips. The best price guarantee has saved me thousands, and the flexible cancellation policy is a lifesaver for my unpredictable schedule.",
-            },
-            {
-              name: "Emma Davis",
-              role: "Adventure Seeker",
-              initial: "E",
-              comment:
-                "Found the perfect beachfront resort for my honeymoon! The verified reviews helped us make the right choice. Everything was exactly as described. Highly recommend!",
-            },
-          ].map((testimonial, index) => (
-            <div key={index} className={styles.testimonialCard}>
-              <div className={styles.testimonialRating}>
+        <div className={styles["testimonials-grid"]}>
+          {testimonials.map((testimonial, index) => (
+            <div key={index} className={styles["testimonial-card"]}>
+              <div className={styles["testimonial-rating"]}>
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <Star key={i} className={styles.starIcon} />
+                  <Star key={i} className={styles["star-filled"]} />
                 ))}
               </div>
-              <p className={styles.testimonialComment}>{testimonial.comment}</p>
-              <div className={styles.testimonialAuthor}>
-                <div className={styles.authorAvatar}>{testimonial.initial}</div>
-                <div className={styles.authorInfo}>
-                  <div className={styles.authorName}>{testimonial.name}</div>
-                  <div className={styles.authorRole}>{testimonial.role}</div>
+              <p className={styles["testimonial-comment"]}>
+                {testimonial.comment}
+              </p>
+              <div className={styles["testimonial-author"]}>
+                <div className={styles["author-avatar"]}>
+                  {testimonial.initial}
+                </div>
+                <div className={styles["author-info"]}>
+                  <div className={styles["author-name"]}>
+                    {testimonial.name}
+                  </div>
+                  <div className={styles["author-role"]}>
+                    {testimonial.role}
+                  </div>
                 </div>
               </div>
             </div>
@@ -397,18 +435,17 @@ const HotelBookingHome = () => {
         </div>
       </section>
 
-      <section className={styles.ctaSection}>
-        <div className={styles.ctaContent}>
-          <h2 className={styles.ctaTitle}>Ready to Start Your Journey?</h2>
-          <p className={styles.ctaDescription}>
-            Join millions of travelers who trust us to find their perfect stay.
-            Book now and save up to 30% on your next adventure.
-          </p>
-          <button className={styles.primaryButton}>
-            Get Started Today
-            <ArrowRight className={styles.buttonIcon} />
-          </button>
-        </div>
+      {/* Final CTA */}
+      <section className={styles["final-cta"]}>
+        <h2 className={styles["cta-title"]}>Ready to Book Your Stay?</h2>
+        <p className={styles["cta-description"]}>
+          Join thousands of travelers and experience luxury accommodations at
+          unbeatable prices.
+        </p>
+        <button className={`${styles["primary-button"]} ${styles.large}`}>
+          Explore Hotels
+          <ArrowRight className={styles["button-icon"]} />
+        </button>
       </section>
     </div>
   );

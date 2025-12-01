@@ -1,5 +1,4 @@
 import React from "react";
-// import styles from "./login.module.css";
 import styles from "@/app/login/login.module.css";
 
 const TextInput = ({
@@ -12,25 +11,31 @@ const TextInput = ({
   onBlur,
   error,
   placeholder,
-  autoFocus = false,
-}) => (
-  <div className={styles.formGroup}>
-    <label className={styles.formLabel}>{label}</label>
-    <div className={styles.inputWrapper}>
-      {Icon && <Icon className={styles.inputIcon} />}
-      <input
-        type={type}
-        name={name}
-        className={`${styles.formInput} ${error ? styles.inputError : ""}`}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        placeholder={placeholder}
-        autoFocus={autoFocus}
-      />
+  disabled = false,
+  autoComplete,
+  ...props
+}) => {
+  return (
+    <div className={styles.formGroup}>
+      {label && <label className={styles.formLabel}>{label}</label>}
+      <div className={styles.inputWrapper}>
+        {Icon && <Icon className={styles.inputIcon} />}
+        <input
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          placeholder={placeholder}
+          disabled={disabled}
+          autoComplete={autoComplete || name}
+          className={`${styles.formInput} ${error ? styles.inputError : ""}`}
+          {...props}
+        />
+      </div>
+      {error && <span className={styles.errorText}>{error}</span>}
     </div>
-    {error && <span className={styles.errorText}>{error}</span>}
-  </div>
-);
+  );
+};
 
 export default TextInput;

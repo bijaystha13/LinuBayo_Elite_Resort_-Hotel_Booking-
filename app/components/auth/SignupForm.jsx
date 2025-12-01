@@ -1,34 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Mail, User, Lock } from "lucide-react";
 import TextInput from "./TextInput";
 import PasswordInput from "./PasswordInput";
 import CheckboxInput from "./CheckboxInput";
 import SocialButton from "./SocialButton";
-// import styles from "./login.module.css";
+import useForm from "@/app/shared/hooks/useFormHook";
 import styles from "@/app/login/login.module.css";
 
-import useForm from "@/app/shared/hooks/useFormHook";
+const validateSignup = (values) => {
+  const errors = {};
+  if (!values.name) errors.name = "Full name is required";
+  if (!values.email) errors.email = "Email is required";
+  else if (!/\S+@\S+\.\S+/.test(values.email))
+    errors.email = "Please enter a valid email";
+  if (!values.password) errors.password = "Password is required";
+  if (!values.terms) errors.terms = "You must accept the terms";
+  return errors;
+};
 
-const SignupForm = () => {
+const SignupForm = ({ onSubmit }) => {
   const signupForm = useForm(
-    {
-      name: "",
-      email: "",
-      password: "",
-      terms: false,
-    },
-    (values) => console.log("Signup submitted:", values)
+    { name: "", email: "", password: "", terms: false },
+    onSubmit,
+    validateSignup
   );
-
-  const handleSignupSubmit = () => {
-    if (!signupForm.values.terms) {
-      signupForm.setErrors({ terms: "You must accept the terms" });
-      return;
-    }
-    signupForm.handleSubmit();
-  };
 
   return (
     <div className={styles.authForm}>
@@ -92,7 +89,11 @@ const SignupForm = () => {
         error={signupForm.errors.terms}
       />
 
-      <button onClick={handleSignupSubmit} className={styles.submitButton}>
+      <button
+        type="button"
+        onClick={signupForm.handleSubmit}
+        className={styles.submitButton}
+      >
         Sign Up
       </button>
 
