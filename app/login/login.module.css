@@ -21,6 +21,12 @@
   right: 0;
   bottom: 0;
   z-index: 0;
+  transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.authBackground.transitioning {
+  filter: blur(8px) brightness(1.2);
+  transform: scale(1.05);
 }
 
 .gradientOrb1,
@@ -28,9 +34,10 @@
 .gradientOrb3 {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.3;
+  filter: blur(100px);
+  opacity: 0.4;
   animation: float 20s infinite ease-in-out;
+  transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .gradientOrb1 {
@@ -79,36 +86,78 @@
   z-index: 1;
   width: 100%;
   max-width: 450px;
-  max-height: calc(100vh - 180px);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.authContainer::-webkit-scrollbar {
-  width: 6px;
-}
-
-.authContainer::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.authContainer::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-}
-
-.authContainer::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .authCard {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 24px;
   padding: 2rem;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
   animation: slideInUp 0.6s ease-out;
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.authCard.transitioning {
+  backdrop-filter: blur(60px) saturate(200%);
+  -webkit-backdrop-filter: blur(60px) saturate(200%);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 12px 48px 0 rgba(0, 0, 0, 0.5),
+    inset 0 2px 0 0 rgba(255, 255, 255, 0.15);
+}
+
+.authCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: opacity 0.8s ease;
+}
+
+.authCard.transitioning::before {
+  opacity: 0.5;
+}
+
+.authCard::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 24px;
+  padding: 2px;
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.3),
+    rgba(118, 75, 162, 0.3),
+    rgba(76, 172, 254, 0.3)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+.authCard.transitioning::after {
+  opacity: 1;
 }
 
 @keyframes slideInUp {
@@ -125,6 +174,12 @@
 /* Header */
 .authHeader {
   margin-bottom: 1.5rem;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.authHeader.transitioning {
+  opacity: 0.7;
+  transform: scale(0.98);
 }
 
 .logoSection {
@@ -136,6 +191,13 @@
 
 .logoIcon {
   font-size: 2.5rem;
+  filter: drop-shadow(0 2px 8px rgba(102, 126, 234, 0.4));
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.logoIcon.transitioning {
+  filter: drop-shadow(0 4px 16px rgba(102, 126, 234, 0.6));
+  transform: scale(1.05);
 }
 
 .logoText {
@@ -151,11 +213,12 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.2;
+  filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
 }
 
 .logoTagline {
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
 }
 
@@ -163,10 +226,24 @@
 .tabContainer {
   position: relative;
   display: flex;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 0.25rem;
   margin-bottom: 1.5rem;
+  overflow: hidden;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.tabContainer.transitioning {
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .tabButton {
@@ -178,13 +255,14 @@
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
   position: relative;
   z-index: 2;
 }
 
 .tabButton.active {
   color: white;
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
 }
 
 .tabIndicator {
@@ -193,10 +271,47 @@
   left: 0.25rem;
   width: calc(50% - 0.25rem);
   height: calc(100% - 0.5rem);
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
-  transition: all 0.3s ease;
+  transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 1;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.tabIndicator::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.4),
+    rgba(118, 75, 162, 0.4)
+  );
+  opacity: 0.6;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.tabIndicator::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(255, 255, 255, 0.3),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.tabIndicator.transitioning::after {
+  opacity: 1;
 }
 
 .tabIndicator.right {
@@ -211,6 +326,7 @@
 .welcomeText {
   text-align: center;
   margin-bottom: 1.5rem;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .welcomeTitle {
@@ -218,6 +334,7 @@
   font-weight: 800;
   margin-bottom: 0.5rem;
   color: white;
+  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.1);
 }
 
 .welcomeDescription {
@@ -233,7 +350,8 @@
 }
 
 .formGroup {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .formLabel {
@@ -242,6 +360,7 @@
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 0.4rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .inputWrapper {
@@ -257,24 +376,29 @@
   height: 16px;
   color: rgba(255, 255, 255, 0.5);
   pointer-events: none;
+  transition: all 0.3s ease;
 }
 
 .formInput {
   width: 100%;
   padding: 0.75rem 0.875rem 0.75rem 2.75rem;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   color: white;
   font-size: 0.875rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .formInput:focus {
   outline: none;
-  background: rgba(255, 255, 255, 0.12);
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(102, 126, 234, 0.6);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15),
+    inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 .formInput::placeholder {
@@ -286,8 +410,9 @@
 }
 
 .inputError {
-  border-color: #f5576c !important;
-  box-shadow: 0 0 0 3px rgba(245, 87, 108, 0.1) !important;
+  border-color: rgba(245, 87, 108, 0.6) !important;
+  box-shadow: 0 0 0 3px rgba(245, 87, 108, 0.15),
+    inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
 }
 
 .errorText {
@@ -296,6 +421,7 @@
   font-size: 0.8rem;
   margin-top: 0.375rem;
   font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .eyeButton {
@@ -326,7 +452,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .checkboxLabel {
@@ -350,27 +476,30 @@
   color: #667eea;
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .forgotLink:hover {
   color: #764ba2;
+  text-shadow: 0 2px 8px rgba(118, 75, 162, 0.4);
 }
 
 /* Terms Container */
 .termsContainer {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .link {
   color: #667eea;
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .link:hover {
   color: #764ba2;
+  text-shadow: 0 2px 8px rgba(118, 75, 162, 0.4);
 }
 
 /* Submit Button */
@@ -378,19 +507,44 @@
   width: 100%;
   padding: 0.875rem;
   background: linear-gradient(135deg, #667eea, #764ba2);
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   color: white;
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.submitButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
 }
 
 .submitButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 12px 32px rgba(102, 126, 234, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.submitButton:hover::before {
+  left: 100%;
 }
 
 .submitButton:active {
@@ -407,27 +561,32 @@
 
 .backButton {
   padding: 0.875rem 1.5rem;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   color: rgba(255, 255, 255, 0.9);
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .backButton:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* Divider */
 .divider {
   position: relative;
   text-align: center;
-  margin: 1.5rem 0;
+  margin: 1.25rem 0;
 }
 
 .divider::before {
@@ -437,17 +596,25 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
 }
 
 .dividerText {
   position: relative;
   display: inline-block;
   padding: 0 1rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.8rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Social Buttons */
@@ -455,7 +622,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .socialButton {
@@ -464,20 +631,25 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   color: rgba(255, 255, 255, 0.9);
   font-weight: 600;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .socialButton:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .socialIcon {
@@ -493,8 +665,8 @@
 /* Footer */
 .authFooter {
   text-align: center;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .footerText {
@@ -508,45 +680,87 @@
   color: #667eea;
   font-weight: 700;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   font-size: 0.875rem;
 }
 
 .switchButton:hover {
   color: #764ba2;
   text-decoration: underline;
+  text-shadow: 0 2px 8px rgba(118, 75, 162, 0.4);
+}
+
+/* Liquid Glass Fade Animations */
+@keyframes liquidFadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-8px) scale(0.98);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.95);
+    filter: blur(8px);
+  }
+}
+
+@keyframes liquidFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(8px) scale(0.98);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+.authForm.fade-out {
+  animation: liquidFadeOut 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.authForm.fade-in {
+  animation: liquidFadeIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .authPage {
     padding: 1rem;
-    padding-top: 100px;
+    padding-top: 80px;
     padding-bottom: 1rem;
   }
 
-  .authContainer {
-    max-height: calc(100vh - 120px);
-  }
-
   .authCard {
-    padding: 1.75rem 1.5rem;
+    padding: 1.5rem 1.25rem;
   }
 
   .logoIcon {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
   }
 
   .logoName {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
   }
 
   .welcomeTitle {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
   .welcomeDescription {
-    font-size: 0.875rem;
+    font-size: 0.85rem;
   }
 
   .formRow {
@@ -562,11 +776,19 @@
     align-items: flex-start;
     gap: 0.75rem;
   }
+
+  .formGroup {
+    margin-bottom: 0.875rem;
+  }
+
+  .welcomeText {
+    margin-bottom: 1.25rem;
+  }
 }
 
 @media (max-width: 480px) {
   .authCard {
-    padding: 1.5rem 1rem;
+    padding: 1.25rem 1rem;
   }
 
   .logoIcon {
@@ -574,7 +796,7 @@
   }
 
   .logoName {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
   }
 
   .logoTagline {
@@ -582,7 +804,7 @@
   }
 
   .welcomeTitle {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
   }
 
   .tabButton {
@@ -591,18 +813,22 @@
   }
 
   .formInput {
-    padding: 0.75rem 0.875rem 0.75rem 2.75rem;
+    padding: 0.7rem 0.875rem 0.7rem 2.5rem;
     font-size: 0.875rem;
   }
 
   .inputIcon {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
     left: 0.875rem;
   }
 
   .submitButton {
-    padding: 0.875rem;
-    font-size: 0.95rem;
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .formGroup {
+    margin-bottom: 0.875rem;
   }
 }

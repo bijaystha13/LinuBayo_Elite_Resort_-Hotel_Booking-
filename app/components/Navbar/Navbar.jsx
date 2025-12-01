@@ -331,9 +331,9 @@ const Navbar = () => {
               Log In
             </Link>
 
-            <Link href="/signup" className={styles.signUpBtn}>
+            {/* <Link href="/signup" className={styles.signUpBtn}>
               Sign Up
-            </Link>
+            </Link> */}
 
             <button className={styles.mobileMenuBtn} onClick={toggleMobileMenu}>
               {isMobileMenuOpen ? (
