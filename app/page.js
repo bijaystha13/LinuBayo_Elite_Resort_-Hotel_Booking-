@@ -28,8 +28,16 @@ const HotelBookingHome = () => {
     guests: "2",
   });
 
+  // useEffect(() => {
+  //   setIsLoaded(true);
+  // }, []);
+
   useEffect(() => {
-    setIsLoaded(true);
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const handleInputChange = (e) => {

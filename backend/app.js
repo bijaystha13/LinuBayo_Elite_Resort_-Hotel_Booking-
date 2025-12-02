@@ -1,8 +1,11 @@
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
 
 import express from "express";
 import mongoose from "mongoose";
+import path from "path";
 import usersRoutes from "./routes/users-routes.js";
+import hotelRoutes from "./routes/hotes-routes.js";
 import HttpError from "./models/HttpError.js";
 
 dotenv.config();
@@ -18,9 +21,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.json());
+app.use(bodyParser.json());
+
+app.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 app.use("/api/users/", usersRoutes);
+app.use("/api/hotels/", hotelRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);

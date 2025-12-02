@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import HeroSection from "../../components/Hotels/HeroSection";
-import StatsSection from "../../components/Hotels/StatsSection";
-import HotelsGrid from "../../components/Hotels/HotelsGrid";
-import CTASection from "../../components/Hotels/CTASection";
+import HeroSection from "../components/Hotels/HeroSection";
+import StatsSection from "../components/Hotels/StatsSection";
+import HotelsGrid from "../components/Hotels/HotelsGrid";
+import CTASection from "../components/Hotels/CTASection";
 
 const DestinationAsiaPage = () => {
   const [selectedCountry, setSelectedCountry] = useState("all");
