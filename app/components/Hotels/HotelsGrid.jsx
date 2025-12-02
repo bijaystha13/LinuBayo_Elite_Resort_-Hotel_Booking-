@@ -1,10 +1,17 @@
 "use client";
 
 import React from "react";
-import { Star, MapPin, Heart, DollarSign } from "lucide-react";
+import { Star, MapPin, Heart } from "lucide-react";
 import styles from "./HotelsGrid.module.css";
+import { useRouter } from "next/navigation";
 
-const HotelsGrid = ({ destinations, onExplore }) => {
+const HotelsGrid = ({ destinations }) => {
+  const router = useRouter();
+
+  const handleExplore = (hotelId) => {
+    router.push(`/hotels/${hotelId}`);
+  };
+
   return (
     <div className={styles.hotelsSection}>
       <div className={styles.sectionHeader}>
@@ -109,7 +116,7 @@ const HotelsGrid = ({ destinations, onExplore }) => {
                 </div>
                 <button
                   className={styles.viewButton}
-                  onClick={() => onExplore(hotel._id || hotel.id)}
+                  onClick={() => handleExplore(hotel._id || hotel.id)}
                 >
                   View Details
                 </button>
