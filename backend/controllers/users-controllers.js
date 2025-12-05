@@ -13,7 +13,7 @@ export async function signup(req, res, next) {
     existingUser = await Users.findOne({ email });
   } catch (err) {
     const error = new HttpError(
-      "Signing in failed, please try again later",
+      "Signing up failed, please try again later",
       500
     );
     return next(error);
@@ -21,7 +21,7 @@ export async function signup(req, res, next) {
 
   if (existingUser) {
     const error = new HttpError(
-      "User already exits, please login instead",
+      "User already exists, please login instead",
       422
     );
     return next(error);
@@ -66,8 +66,7 @@ export async function signup(req, res, next) {
         email: createdUser.email,
         role: createdUser.role,
       },
-      process.env.JWT_SECRET,
-
+      process.env.JWT_SECRET || "supersecret_dont_share",
       { expiresIn: "1h" }
     );
   } catch (err) {
@@ -78,11 +77,15 @@ export async function signup(req, res, next) {
     return next(error);
   }
 
+  // ✅ FIXED: Return user object with all required fields
   res.status(201).json({
-    userId: createdUser.id,
-    email: createdUser.email,
-    role,
     token,
+    user: {
+      id: createdUser.id,
+      name: createdUser.name,
+      email: createdUser.email,
+      role: createdUser.role,
+    },
     message: "User Created",
   });
 }
@@ -93,7 +96,8 @@ export async function login(req, res, next) {
   let existingUser;
 
   try {
-    existingUser = await Users.find({ email });
+    // ✅ FIXED: Use findOne instead of find (find returns array)
+    existingUser = await Users.findOne({ email });
   } catch (err) {
     const error = new HttpError(
       "Logging in failed, please try again later.",
@@ -102,10 +106,11 @@ export async function login(req, res, next) {
     return next(error);
   }
 
+  // ✅ FIXED: Check if user exists
   if (!existingUser) {
     const error = new HttpError(
-      "Credentials not found, could not log you in. Please try signing up",
-      403
+      "Invalid credentials, could not log you in.",
+      401
     );
     return next(error);
   }
@@ -113,10 +118,11 @@ export async function login(req, res, next) {
   let isValidPassword = false;
 
   try {
+    // Now existingUser is an object, not an array
     isValidPassword = await bcrypt.compare(password, existingUser.password);
   } catch (err) {
     const error = new HttpError(
-      "Invalid credentials, could not log you in please check your credentials and try againa.",
+      "Could not log you in, please check your credentials and try again.",
       500
     );
     return next(error);
@@ -125,7 +131,7 @@ export async function login(req, res, next) {
   if (!isValidPassword) {
     const error = new HttpError(
       "Invalid credentials, could not log you in.",
-      403
+      401
     );
     return next(error);
   }
@@ -149,11 +155,15 @@ export async function login(req, res, next) {
     return next(error);
   }
 
+  // ✅ FIXED: Return user object with all required fields
   res.json({
-    message: "Logged In",
-    userId: existingUser.id,
-    email: existingUser.email,
     token,
-    role: existingUser.role,
+    user: {
+      id: existingUser.id,
+      name: existingUser.name,
+      email: existingUser.email,
+      role: existingUser.role,
+    },
+    message: "Logged In",
   });
 }

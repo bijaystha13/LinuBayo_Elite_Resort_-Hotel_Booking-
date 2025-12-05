@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import SignupForm from "../components/auth/SignupForm";
 import LoginForm from "../components/auth/LoginForm";
 import styles from "./login.module.css";
 import Modal from "../shared/UIElements/Modal";
+import { useAuth } from "@/app/shared/Context/AuthContext";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,6 +16,9 @@ const AuthPage = () => {
     message: "",
     type: "error",
   });
+
+  const router = useRouter();
+  const { login } = useAuth();
 
   const showModal = (title, message, type = "error") => {
     setModalState({
@@ -35,20 +40,55 @@ const AuthPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
+
       const data = await res.json();
+      console.log("Backend response:", data); // Debug log
+
       if (res.ok) {
-        console.log("Login success:", data);
+        // Store token
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+
+        // Prepare user data from backend response
+        const userData = {
+          id: data.user?.id || data.userId,
+          email: data.user?.email || values.email,
+          name: data.user?.name || values.email.split("@")[0],
+          role: data.user?.role || "user",
+        };
+
+        console.log("User data to store:", userData); // Debug log
+
+        // Update auth context
+        login(userData);
+
         showModal("Welcome Back!", "Login successful", "success");
+
+        // Redirect based on role after modal shows
+        setTimeout(() => {
+          closeModal();
+          if (userData.role === "admin") {
+            router.push("/admin/dashboard");
+          } else {
+            router.push("/");
+          }
+        }, 1500);
       } else {
         showModal(
           "Login Failed",
-          data.message || "Invalid credentials",
+          data.message ||
+            "Invalid credentials. Please check your email and password.",
           "error"
         );
       }
     } catch (err) {
       console.error("Login error:", err);
-      showModal("Connection Error", "Unable to connect to server", "error");
+      showModal(
+        "Connection Error",
+        "Unable to connect to server. Please check if the backend is running.",
+        "error"
+      );
     }
   };
 
@@ -59,20 +99,54 @@ const AuthPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
+
       const data = await res.json();
+      console.log("Signup response:", data); // Debug log
+
       if (res.ok) {
-        console.log("Signup success:", data);
-        showModal("Account Created!", "Signup successful", "success");
+        // Store token
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+
+        // Prepare user data
+        const userData = {
+          id: data.user?.id || data.userId,
+          email: data.user?.email || values.email,
+          name: data.user?.name || values.name || values.email.split("@")[0],
+          role: data.user?.role || "user",
+        };
+
+        console.log("Signup user data:", userData); // Debug log
+
+        // Update auth context
+        login(userData);
+
+        showModal(
+          "Account Created!",
+          "Signup successful! Redirecting to home...",
+          "success"
+        );
+
+        // Redirect to home
+        setTimeout(() => {
+          closeModal();
+          router.push("/");
+        }, 1500);
       } else {
         showModal(
           "Signup Failed",
-          data.message || "Unable to create account",
+          data.message || "Unable to create account. Please try again.",
           "error"
         );
       }
     } catch (err) {
       console.error("Signup error:", err);
-      showModal("Connection Error", "Unable to connect to server", "error");
+      showModal(
+        "Connection Error",
+        "Unable to connect to server. Please check if the backend is running.",
+        "error"
+      );
     }
   };
 
