@@ -102,6 +102,10 @@ export default function HotelListPage() {
     fetchHotels();
   }, [filters, sortBy]);
 
+  // useEffect(() => {
+  //   fetchHotels();
+  // }, [JSON.stringify(filters), sortBy]);
+
   // Handle search
   const handleSearch = () => {
     setFilters((prev) => ({

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 import React, { useRef, useEffect, useState } from "react";
 import {
   X,

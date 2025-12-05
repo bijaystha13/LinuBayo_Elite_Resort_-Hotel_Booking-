@@ -96,7 +96,6 @@ export async function login(req, res, next) {
   let existingUser;
 
   try {
-    // ✅ FIXED: Use findOne instead of find (find returns array)
     existingUser = await Users.findOne({ email });
   } catch (err) {
     const error = new HttpError(
@@ -106,7 +105,6 @@ export async function login(req, res, next) {
     return next(error);
   }
 
-  // ✅ FIXED: Check if user exists
   if (!existingUser) {
     const error = new HttpError(
       "Invalid credentials, could not log you in.",
@@ -118,7 +116,6 @@ export async function login(req, res, next) {
   let isValidPassword = false;
 
   try {
-    // Now existingUser is an object, not an array
     isValidPassword = await bcrypt.compare(password, existingUser.password);
   } catch (err) {
     const error = new HttpError(

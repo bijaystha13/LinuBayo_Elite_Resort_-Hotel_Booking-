@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import path from "path";
 import usersRoutes from "./routes/users-routes.js";
 import hotelRoutes from "./routes/hotes-routes.js";
+import bookingRoutes from "./routes/bookings-routes.js";
 import HttpError from "./models/HttpError.js";
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 app.use("/api/users/", usersRoutes);
 app.use("/api/hotels/", hotelRoutes);
+app.use("/api/bookings/", bookingRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);

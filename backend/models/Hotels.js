@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const HotelSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    type: String, // e.g. “Luxury Resort”
+    type: String,
     location: {
       city: { type: String, required: true },
       country: { type: String, required: true },
@@ -14,7 +14,7 @@ const HotelSchema = new mongoose.Schema(
     originalPrice: Number,
     amenities: [String],
     featured: { type: Boolean, default: false },
-    image: String, // single image / emoji
+    image: String,
     distance: String,
   },
   { timestamps: true }
